@@ -1,0 +1,57 @@
+Database Design 
+
+Five tables:
+1) tbl_BuyTrades
+2) tbl_SellTrades
+3) tbl_StockSymbols
+4) tbl_SubscribedStocks
+5) tbl_MarketData
+6) tbl_MovingAverages
+
+Columns and description
+
+BuyTrades
+This table is saves the information of a buy trade. This table contains:
+- id (int)
+- symbol (varchar)
+- num_stock_purchased (varchar)
+- bid_price (varchar)
+- ask_price (varchar)
+- ts (timestamp)
+
+SellTrades
+This table saves the information of a sell trade. This table contains:
+- id (int)
+- symbol(varchar)
+- num_stock_sold (varchar)
+- bid_price (varchar)
+- ask_price (varchar)
+- ts (timestamp)
+- fk_buy_id (int foreign key)
+
+StockSymbols
+This table stores the symbols and corresponding company names that can be traded on the London Stock Exchange. This table contains:
+- id (int)
+- symbolname (varchar)
+- companyname (varchar)
+- subscribed (varchar)
+
+SubscribedStocks
+This table stores the list of stocks that are subscribed with there bid, ask and timestamp from the Yahoo financial feed. This table contains:
+- symbol (varchar)
+- bid (varchar)
+- ask (varchar)
+- ts (timestamp)
+
+MarketData
+This table stores the market data for the subscribed stocks. This table contains:
+- bid (varchar)
+- ask (varchar)
+- fk_symbolname (varchar foreign key)
+
+MovingAverages
+This table stores the short and long moving averages from the algo. This table contains:
+- symbol (varchar)
+- long_average (varchar)
+- short_average (varchar)
+

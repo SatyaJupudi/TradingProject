@@ -1,0 +1,13 @@
+Process Map
+
+Run -> 
+Stock Selector -> 
+Yahoo Feed -> 
+Feed data table -> 		
+Strategy Activator -> 
+ExponentialMovingAverage.java -> 
+Moving Average Graph -> 
+OrderManager.java -> 
+Trader Activity table AND Current Profit/Loss display -> 
+Strategy Activater -> 
+Stock Selector 

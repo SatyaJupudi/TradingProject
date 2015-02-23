@@ -1,0 +1,75 @@
+Database and component relationships
+
+1) SQL -> Stock Subscriber
+table: tbl_StockSymbols
+	- symbolname
+	- companyname
+
+2) Stock Subscriber -> SQL
+table: tbl_StockSymbols
+	- subscribed
+
+START THREAD
+
+3) YahooFeedHandler -> SQL
+table: tbl_MarketData
+	- bid
+	- ask
+	- fk_symbolname
+
+3) SQL -> Strategy Activator
+table: tbl_StockSymbols
+	- symbolname
+	- companyname
+	- subscribed
+
+START THREAD
+
+4) Strategy Activator -> ExponentialMovingAverage.java
+
+5) ExponentialMovingAverage.java -> SQL
+table: tbl_BuyTrades
+	- symbol
+	- num_stock_purchased
+	- bid_price
+	- ask_price
+	- ts
+table: tbl_SellTrades
+	- symbol
+	- num_stock_sold
+	- bid_price
+	- ask_price
+	- ts
+	- fk_buy_id
+table: tbl_MovingAverages
+	- symbol
+	- long_average
+	- short_average
+
+6) SQL -> Feed Data Table
+table: tbl_MarketData
+	- fk_symbolname
+	- bid
+	- ask
+
+7) SQL -> Moving Average Graph
+table: tbl_MovingAverages
+	- symbol
+	- long_average
+	- short_average
+
+8) SQL -> Trader Activity Table
+table: tbl_BuyTrades
+	- symbol
+	- SUM(num_stock_purchased * ask_price)
+table: tbl_SellTrades
+	- symbol
+	- SUM(num_stock_sold * bid_price)
+
+9) SQL -> Current profit/loss display
+table: tbl_BuyTrades
+	- symbol
+	- SUM(num_stock_purchased * ask_price)
+table: tbl_SellTrades
+	- symbol
+	- SUM(num_stock_sold * bid_price)
