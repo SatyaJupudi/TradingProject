@@ -2,7 +2,6 @@ package com.trader.servlet;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -42,20 +41,22 @@ public class RemoveSubscription extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String stockSelection = request.getParameter("companyRef");
+		ResultSet rs = null;
 		OpenConnection connectionPool = new OpenConnection("javaDemoDB");
 		connectionPool.start();
 		Connection con = connectionPool.getConnection();
-		System.out.println(stockSelection);
 		try {
-			PreparedStatement pst = null;
-			pst = con.prepareStatement("UPDATE tbl_StockSymbols SET subscribed='N' WHERE companyname=?");
-			pst.setString(1, stockSelection);
-			pst.executeUpdate();
-			response.sendRedirect("SymbolSelector.jsp");
+			Statement statement = con.createStatement();
+			rs = statement.executeQuery("SELECT symbolname, companyname FROM tbl_StockSymbols WHERE subscribed = 'Y' ORDER BY companyname");
+			ArrayList<String> selectOutput = new ArrayList<>();	
+			while (rs.next()) {
+				selectOutput.add(rs.getString(2));
+			}
+			request.setAttribute("selectOutput", selectOutput);
+			getServletConfig().getServletContext().getRequestDispatcher("/RemoveSubscriptions.jsp").forward(request,response);
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
-		
 	}
+
 }

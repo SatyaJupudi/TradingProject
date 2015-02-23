@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="java.sql.*" import="com.trader.util.*"%>
+    pageEncoding="UTF-8" import="java.util.*" import="com.trader.util.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -15,36 +15,25 @@
 					<td><strong>Company Name</strong></td>
 				</tr>
 				<%
-					ResultSet rs = null;
-					OpenConnection connectionPool = new OpenConnection("javaDemoDB");
-					connectionPool.start();
-					Connection con = connectionPool.getConnection();
-					try {
-						
-						Statement statement = con.createStatement();
-						rs = statement.executeQuery("SELECT symbolname, companyname FROM tbl_StockSymbols WHERE subscribed = 'Y'");
-						
-						if (rs != null) {
-							while (rs.next()) {%>
+				ArrayList<String> selectOutput = (ArrayList<String>) request.getAttribute("selectOutput");
+					if (selectOutput != null) {
+							for (int x = 0; x < selectOutput.size(); x = x + 2) {%>
 								<tr>
 									<td>
-										<%=rs.getString(1)%>
+										<%=selectOutput.get(x)%>
 									</td>
 									<td>
-										<%=rs.getString(2)%>
+										<%=selectOutput.get(x+1)%>
 									</td>
 								</tr>
-						<%	}
+						<% 	}
 						} else {
 							out.print("<tr><td>No stocks are subscribed</td></tr>");
 						}
-					} catch (SQLException e) {
-						out.print(e);
-					}
 				%>
 		</table>
 		<br>
-		<form action="SymbolSelector.jsp">
+		<form action="StockSelector" method="post">
 			<input type="submit" value="Go back to the symbol selector screen">
 		</form>
 	</center>
