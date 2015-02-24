@@ -46,18 +46,12 @@ public class SetToY extends HttpServlet {
 		Connection con = connectionPool.getConnection();
 		try {
 			PreparedStatement pst = null;
-			if (stockSelection.contains(".L")) {
-				pst = con.prepareStatement("UPDATE tbl_StockSymbols SET subscribed='Y' WHERE symbolname=?");
-				pst.setString(1, stockSelection);
-				pst.executeUpdate();
-			} else {
-				pst = con.prepareStatement("UPDATE tbl_StockSymbols SET subscribed='Y' WHERE companyname=?");
-				pst.setString(1, stockSelection);
-				pst.executeUpdate();
-			}
-			ServletContext context = this.getServletContext();
-			RequestDispatcher dispatcher = context.getRequestDispatcher("/StockSelector");
-			dispatcher.forward(request, response);
+			pst = con.prepareStatement("UPDATE tbl_StockSymbols SET subscribed='Y' WHERE companyname=?");
+			pst.setString(1, stockSelection);
+			pst.executeUpdate();
+			ServletContext context1 = this.getServletContext();
+			RequestDispatcher dispatcher1 = context1.getRequestDispatcher("/StartFeed");
+			dispatcher1.forward(request, response);
 		} catch (SQLException e) {
 			System.out.println(e);
 		}

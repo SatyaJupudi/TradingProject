@@ -9,14 +9,15 @@
 </head>
 <body>
 <%
-ArrayList<String> selectOutput = (ArrayList<String>) request.getAttribute("selectOutput");
+ArrayList<String> selectOutputSub = (ArrayList<String>) request.getAttribute("selectOutputSub");
+ArrayList<String> selectOutputTrading = (ArrayList<String>) request.getAttribute("selectOutputTrading");
 %>
 
 <center>
 	<form action="ActivateStrategy" method="post">
 		<h2>Select a stock to activate</h2>
 		<select id="companyNameAct" name="companyRef" >
-		<% for (String output : selectOutput) {%>
+		<% for (String output : selectOutputSub) {%>
 			<option id="value"><%=output%></option>
 		<%} %>
 		</select>
@@ -26,7 +27,7 @@ ArrayList<String> selectOutput = (ArrayList<String>) request.getAttribute("selec
 	<form action="DeactivateStrategy" method="post">
 		<h2>Select a stock to deactivate</h2>
 		<select id="companyNameDeact" name="companyRef" >
-		<%for (String output : selectOutput) { %>
+		<%for (String output : selectOutputTrading) { %>
 			<option id="value"><%=output%></option>
 		<% } %>
 		</select>

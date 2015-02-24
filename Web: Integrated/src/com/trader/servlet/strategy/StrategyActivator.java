@@ -42,18 +42,27 @@ public class StrategyActivator extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ResultSet rs = null;
+		ResultSet rs1 = null;
+		ResultSet rs2 = null;
 		OpenConnection connectionPool = new OpenConnection("javaDemoDB");
 		connectionPool.start();
 		Connection con = connectionPool.getConnection();
 		try {
-			Statement statement = con.createStatement();
-			rs = statement.executeQuery("SELECT symbolname, companyname FROM tbl_StockSymbols WHERE subscribed = 'Y' ORDER BY companyname");
-			ArrayList<String> selectOutput = new ArrayList<>();	
-			while (rs.next()) {
-				selectOutput.add(rs.getString(2));
+			Statement st1 = con.createStatement();
+			rs1 = st1.executeQuery("SELECT symbolname, companyname FROM tbl_StockSymbols WHERE subscribed = 'Y' AND trading = 'N' ORDER BY companyname");
+			ArrayList<String> selectOutputSub = new ArrayList<>();	
+			while (rs1.next()) {
+				selectOutputSub.add(rs1.getString(2));
 			}
-			request.setAttribute("selectOutput", selectOutput);
+			request.setAttribute("selectOutputSub", selectOutputSub);
+			
+			Statement st2 = con.createStatement();
+			rs2 = st1.executeQuery("SELECT symbolname, companyname FROM tbl_StockSymbols WHERE trading = 'Y' ORDER BY companyname");
+			ArrayList<String> selectOutputTrading = new ArrayList<>();	
+			while (rs2.next()) {
+				selectOutputTrading.add(rs2.getString(2));
+			}
+			request.setAttribute("selectOutputTrading", selectOutputTrading);
 			getServletConfig().getServletContext().getRequestDispatcher("/StrategyActivator.jsp").forward(request,response);
 		} catch (SQLException e) {
 			System.out.println(e);
